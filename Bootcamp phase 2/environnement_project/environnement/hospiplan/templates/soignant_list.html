@@ -1,0 +1,13 @@
+<h1>Liste des soignants</h1>
+
+{% for s in soignants %}
+
+<p>
+
+{{s.nom}}
+
+<a href="{{s.id}}">Voir</a>
+
+</p>
+
+{% endfor %}

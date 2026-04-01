@@ -1,0 +1,17 @@
+<h1>Liste des absences</h1>
+
+{% for a in absences %}
+
+<p>
+
+Soignant : {{a.soignant}}
+
+Début : {{a.date_debut}}
+
+Fin : {{a.date_fin}}
+
+<a href="{{a.id}}">Voir</a>
+
+</p>
+
+{% endfor %}

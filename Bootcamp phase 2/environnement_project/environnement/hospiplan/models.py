@@ -166,4 +166,15 @@ class Absence(models.Model):
     is_planned = models.BooleanField(default=True)
     
 
-    
+
+class Soignant(models.Model):
+
+    nom=models.CharField(max_length=100)
+
+    prenom=models.CharField(max_length=100)
+
+    specialite=models.CharField(max_length=100)
+
+    def __str__(self):
+
+        return self.nom
