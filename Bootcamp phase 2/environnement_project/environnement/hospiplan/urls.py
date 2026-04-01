@@ -12,4 +12,6 @@ urlpatterns=[
 
     path('absences/<int:id>/',views.absence_detail,name="absence_detail"),
 
+    path('affectations/create/',views.create_affectation),
+
 ]
