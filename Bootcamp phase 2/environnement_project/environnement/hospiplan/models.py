@@ -175,6 +175,9 @@ class Soignant(models.Model):
 
     specialite=models.CharField(max_length=100)
 
+    phone_number=models.CharField(max_length=20)
+
     def __str__(self):
 
         return self.nom
+    

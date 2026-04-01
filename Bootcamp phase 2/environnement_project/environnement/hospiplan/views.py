@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from .models import Soignant
 
+def home(request):
+
+    return render(request,'home.html')
+
 def soignant_list(request):
 
     soignants = Soignant.objects.all()

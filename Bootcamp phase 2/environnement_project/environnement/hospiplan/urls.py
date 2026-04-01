@@ -8,8 +8,8 @@ urlpatterns=[
 
     path('<int:id>/',views.soignant_detail,name="soignant_detail"),
 
-    path('absences/',views.absence_list),
+    path('absences/',views.absence_list,name="absence_list"),
 
-    path('absences/<int:id>/',views.absence_detail),
+    path('absences/<int:id>/',views.absence_detail,name="absence_detail"),
 
 ]
