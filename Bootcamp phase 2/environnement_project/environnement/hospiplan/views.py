@@ -1,7 +1,20 @@
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Soignant
 from django.views.decorators.csrf import csrf_exempt
 
+
+@api_view(['GET'])
+
+def test_api(request):
+
+    return Response({
+
+        "message":"API fonctionne"
+
+    })
 def home(request):
 
     return render(request,'home.html')
@@ -54,7 +67,7 @@ def create_affectation(request):
 
         soignant=Soignant.objects.get(id=soignant_id)
 
-        poste=Poste.objects.get(id=poste_id)
+        poste=poste.objects.get(id=poste_id)
 
         # validation absence
 
