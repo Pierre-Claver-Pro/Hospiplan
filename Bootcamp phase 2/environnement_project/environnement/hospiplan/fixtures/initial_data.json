@@ -1,0 +1,33 @@
+[
+  {
+    "model": "hospiplan.soignant",
+    "pk": 1,
+    "fields": {
+      "nom": "Dupont",
+      "prenom": "Jean",
+      "specialite": "Cardiologie",
+      "phone_number": "0612345678"
+    }
+  },
+  {
+    "model": "hospiplan.soignant",
+    "pk": 2,
+    "fields": {
+      "nom": "Martin",
+      "prenom": "Sophie",
+      "specialite": "Neurologie",
+      "phone_number": "0698765432"
+    }
+  },
+  {
+    "model": "hospiplan.poste",
+    "pk": 1,
+    "fields": {
+      "type_garde": "jour",
+      "date_debut": "2024-01-15T08:00:00",
+      "date_fin": "2024-01-15T20:00:00",
+      "min_soignants": 2,
+      "service": null
+    }
+  }
+]

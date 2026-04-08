@@ -102,6 +102,8 @@ class Service(models.Model):
     )
     bed_capacity = models.IntegerField()
     criticality_level = models.IntegerField(default=1)
+    seuil_minimum = models.IntegerField(default=1)
+
 
 
 class CareUnit(models.Model):
@@ -157,16 +159,6 @@ class AbsenceType(models.Model):
     impacts_quota = models.BooleanField(default=True)
 
 
-class Absence(models.Model):
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    absence_type = models.ForeignKey(AbsenceType, on_delete=models.CASCADE)
-    start_date = models.DateField()
-    expected_end_date = models.DateField()
-    actual_end_date = models.DateField(null=True, blank=True)
-    is_planned = models.BooleanField(default=True)
-    
-
-
 class Soignant(models.Model):
 
     nom=models.CharField(max_length=100)
@@ -181,3 +173,57 @@ class Soignant(models.Model):
 
         return self.nom
     
+class Absence(models.Model):
+    soignant = models.ForeignKey('Soignant', on_delete=models.CASCADE)  # ← était "staff"
+    absence_type = models.ForeignKey(AbsenceType, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    expected_end_date = models.DateField()
+    actual_end_date = models.DateField(null=True, blank=True)
+    is_planned = models.BooleanField(default=True)
+    
+
+
+    
+class Poste(models.Model):
+    TYPE_CHOICES = [('jour', 'Jour'), ('nuit', 'Nuit'), ('weekend', 'Weekend')]
+    
+    care_unit = models.ForeignKey(CareUnit, on_delete=models.CASCADE)
+    type_garde = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    date_debut = models.DateTimeField()
+    date_fin = models.DateTimeField()
+    min_soignants = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"Poste {self.type_garde} - {self.date_debut}"
+
+
+class Affectation(models.Model):
+    soignant = models.ForeignKey(Soignant, on_delete=models.CASCADE)
+    poste = models.ForeignKey(Poste, on_delete=models.CASCADE)
+    assigned_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('soignant', 'poste')
+
+
+
+class PosteCertificationRequise(models.Model):
+    poste = models.ForeignKey(Poste, on_delete=models.CASCADE, related_name='certifications_requises')
+    certification = models.ForeignKey(Certification, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('poste', 'certification')
+
+
+
+class SoignantCertification(models.Model):
+    soignant = models.ForeignKey(Soignant, on_delete=models.CASCADE, related_name='certifications')
+    certification = models.ForeignKey(Certification, on_delete=models.CASCADE)
+    obtained_date = models.DateField()
+    expiration_date = models.DateField(null=True, blank=True)
+
+class SoignantContrat(models.Model):
+    soignant = models.ForeignKey(Soignant, on_delete=models.CASCADE, related_name='contrats')
+    contract_type = models.ForeignKey(ContractType, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)

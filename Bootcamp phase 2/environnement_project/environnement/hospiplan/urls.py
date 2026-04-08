@@ -1,17 +1,14 @@
-from django.urls import path
-
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from . import views
 
-urlpatterns=[
+router = DefaultRouter()
+router.register('soignants', views.SoignantViewSet)
+router.register('postes', views.PosteViewSet)
+router.register('absences', views.AbsenceViewSet)
 
-    path('',views.soignant_list,name="soignant_list"),
-
-    path('<int:id>/',views.soignant_detail,name="soignant_detail"),
-
-    path('absences/',views.absence_list,name="absence_list"),
-
-    path('absences/<int:id>/',views.absence_detail,name="absence_detail"),
-
-    path('affectations/create/',views.create_affectation),
-
+urlpatterns = [
+    path('api/', include(router.urls)),
+    path('api/affectations/', views.create_affectation),
+    path('api/affectations/<int:id>/delete/', views.delete_affectation),
 ]
