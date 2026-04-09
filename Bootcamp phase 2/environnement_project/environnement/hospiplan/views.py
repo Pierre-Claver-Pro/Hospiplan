@@ -105,16 +105,8 @@ def create_affectation(request):
             )
 
     # ── Contrainte 5 : Seuil minimum soignants par service ───
-    if poste.service:
-        nb_affectes = Affectation.objects.filter(
-            poste__service=poste.service,
-            poste__date_debut__date=poste.date_debut.date()
-        ).values('soignant').distinct().count()
-
-        if nb_affectes < poste.service.seuil_minimum:
-            # On vérifie qu'on ne retire pas un soignant (ici on en ajoute un, ok)
-            pass  # La contrainte bloque la suppression, pas la création
-
+    # ── Contrainte 5 : ignorée pour l'instant
+    pass
     # ── Contrainte 6 : Contrat autorise le type de garde ─────
     contrat = SoignantContrat.objects.filter(
         soignant=soignant,

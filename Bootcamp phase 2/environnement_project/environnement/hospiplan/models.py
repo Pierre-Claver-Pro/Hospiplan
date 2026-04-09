@@ -187,7 +187,7 @@ class Absence(models.Model):
 class Poste(models.Model):
     TYPE_CHOICES = [('jour', 'Jour'), ('nuit', 'Nuit'), ('weekend', 'Weekend')]
     
-    care_unit = models.ForeignKey(CareUnit, on_delete=models.CASCADE)
+    care_unit = models.ForeignKey(CareUnit, on_delete=models.CASCADE, null=True, blank=True) 
     type_garde = models.CharField(max_length=20, choices=TYPE_CHOICES)
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
