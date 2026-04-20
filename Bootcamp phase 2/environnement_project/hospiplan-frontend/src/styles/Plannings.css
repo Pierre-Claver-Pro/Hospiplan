@@ -1,0 +1,500 @@
+/* ═══════════════════════════════════════════════════════════════ */
+/* PHASE 3 : STYLES POUR LA PAGE PLANNINGS                          */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.plannings-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.plannings-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 1.5rem;
+}
+
+.plannings-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* ─── Alertes ─── */
+.alert {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+}
+
+.alert button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* ─── Boutons ─── */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #1e7e34;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-large {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.btn-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* ─── Formulaire de génération ─── */
+.generation-form {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+}
+
+.generation-form h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-actions button {
+  flex: 1;
+}
+
+/* ─── Tableau des plannings ─── */
+.plannings-list-section {
+  margin-top: 3rem;
+}
+
+.plannings-list-section h2 {
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+.plannings-table {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.plannings-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.plannings-table thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.plannings-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+}
+
+.plannings-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.plannings-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.status.generated {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status.edited {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status.approved {
+  background-color: #cfe2ff;
+  color: #084298;
+}
+
+.status.published {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.score {
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+}
+
+.score.low {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.score.high {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+/* ─── Détail du planning ─── */
+.planning-detail {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.planning-detail h2 {
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.planning-info {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.planning-info p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ─── Section Score ─── */
+.score-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.score-section h3 {
+  margin-top: 0;
+}
+
+.score-total {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.score-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffeb3b;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0 0;
+  opacity: 0.9;
+}
+
+.score-breakdown {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.score-breakdown h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.score-breakdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.score-breakdown li {
+  padding: 0.6rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.score-breakdown li:last-child {
+  border-bottom: none;
+}
+
+.penalty {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.coverage-info {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.95rem;
+}
+
+/* ─── Section Affectations ─── */
+.affectations-section {
+  margin-bottom: 2rem;
+}
+
+.affectations-section h3 {
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+.affectations-table {
+  width: 100%;
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+.affectations-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.affectations-table thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.affectations-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.affectations-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 0.95rem;
+}
+
+.affectations-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge.jour {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge.nuit {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.badge.weekend {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* ─── Actions ─── */
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #dee2e6;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .plannings-container {
+    padding: 1rem;
+  }
+
+  .plannings-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .generation-form {
+    padding: 1.5rem;
+  }
+
+  .planning-info {
+    grid-template-columns: 1fr;
+  }
+
+  .score-value {
+    font-size: 2rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .affectations-table {
+    overflow-x: auto;
+  }
+
+  .affectations-table table {
+    font-size: 0.85rem;
+  }
+
+  .affectations-table th,
+  .affectations-table td {
+    padding: 0.7rem 0.5rem;
+  }
+}

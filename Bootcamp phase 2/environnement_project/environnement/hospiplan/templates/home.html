@@ -1,11 +1,281 @@
-<h1>HospiPlan</h1>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HospiPlan - Gestion Hospitalière</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<p>Bienvenue dans le système de gestion hospitalier</p>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+        }
 
-<a href="/api/soignants/">Voir les soignants</a>
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-<a href="/api/absences/">Voir les absences</a>
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+            animation: slideDown 0.8s ease;
+        }
 
-<a href="/api/postes/">Voir les postes</a>
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
 
-<a href="/api/affectations/">Voir les affectations</a>
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .card-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            height: 120px;
+            color: white;
+        }
+
+        .card-item:nth-child(1) .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-item:nth-child(2) .card-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .card-item:nth-child(3) .card-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .card-item:nth-child(4) .card-header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .card-item:nth-child(5) .card-header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .card-body {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .card-body p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .btn-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: opacity 0.3s ease;
+            border: none;
+        }
+
+        .btn-card:hover {
+            opacity: 0.9;
+            color: white;
+            text-decoration: none;
+        }
+
+        .admin-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-section h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .btn-admin {
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-admin:hover {
+            transform: scale(1.05);
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-custom">
+        <div class="header">
+            <h1><i class="fas fa-hospital"></i> HospiPlan</h1>
+            <p>Système de Gestion Hospitalière Intégré</p>
+        </div>
+
+        <div class="cards-grid">
+            <a href="/api/soignants/" class="card-item">
+                <div class="card-header">
+                    <i class="fas fa-user-nurse"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Soignants</h3>
+                    <p>Gérez l'ensemble de vos professionnels de santé et consultez leurs informations détaillées.</p>
+                    <span class="btn-card">Accéder <i class="fas fa-arrow-right ms-2"></i></span>
+                </div>
+            </a>
+
+            <a href="/api/absences/" class="card-item">
+                <div class="card-header">
+                    <i class="fas fa-calendar-xmark"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Absences</h3>
+                    <p>Consultez et gérez les absences du personnel pour une meilleure organisation.</p>
+                    <span class="btn-card">Accéder <i class="fas fa-arrow-right ms-2"></i></span>
+                </div>
+            </a>
+
+            <a href="/api/postes/" class="card-item">
+                <div class="card-header">
+                    <i class="fas fa-briefcase-medical"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Postes</h3>
+                    <p>Administrez les différents postes et départements de votre établissement.</p>
+                    <span class="btn-card">Accéder <i class="fas fa-arrow-right ms-2"></i></span>
+                </div>
+            </a>
+
+            <a href="/api/affectations/" class="card-item">
+                <div class="card-header">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Affectations</h3>
+                    <p>Gérez les affectations du personnel selon les besoins et disponibilités.</p>
+                    <span class="btn-card">Accéder <i class="fas fa-arrow-right ms-2"></i></span>
+                </div>
+            </a>
+
+            <a href="/admin/" class="card-item">
+                <div class="card-header">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Administration</h3>
+                    <p>Accédez au panneau d'administration Django pour une gestion avancée.</p>
+                    <span class="btn-card">Accéder <i class="fas fa-arrow-right ms-2"></i></span>
+                </div>
+            </a>
+        </div>
+
+        <div class="admin-section">
+            <h2><i class="fas fa-shield-alt"></i> Espace Administrateur</h2>
+            <p style="margin-bottom: 25px;">Pour plus de configuration et de contrôle, accédez au panneau d'administration complet.</p>
+            <a href="/admin/" class="btn-admin">Aller à l'Administration <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

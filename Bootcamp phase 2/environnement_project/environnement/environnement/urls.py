@@ -5,6 +5,6 @@ from hospiplan import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('hospiplan.urls')),  # routes API
+    path('api/', include('hospiplan.urls')),  # routes API avec /api/ prefix
     path('', views.home, name="home"),              # page d'accueil
 ]

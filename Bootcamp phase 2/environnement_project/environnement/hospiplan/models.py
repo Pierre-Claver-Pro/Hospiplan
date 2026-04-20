@@ -55,6 +55,9 @@ class ContractType(models.Model):
     leave_days_per_year = models.IntegerField(null=True, blank=True)
     night_shift_allowed = models.BooleanField(default=True)
 
+    def __str__(self):        # ← ajoute ça
+        return self.name      # ← et ça
+
 
 class Contract(models.Model):
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
@@ -168,6 +171,8 @@ class Soignant(models.Model):
     specialite=models.CharField(max_length=100)
 
     phone_number=models.CharField(max_length=20)
+    
+    is_active = models.BooleanField(default=True, help_text="Soignant actif dans le système")
 
     def __str__(self):
 
@@ -227,3 +232,146 @@ class SoignantContrat(models.Model):
     contract_type = models.ForeignKey(ContractType, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
+
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 3 : GÉNÉRATION AUTOMATIQUE DE PLANNINGS
+# ═══════════════════════════════════════════════════════════════
+
+class Planning(models.Model):
+    """
+    Un planning généré pour une période donnée.
+    Représente l'ensemble des affectations d'une semaine/mois.
+    """
+    STATUS_CHOICES = [
+        ('draft', 'Brouillon'),
+        ('generated', 'Généré'),
+        ('edited', 'Modifié'),
+        ('approved', 'Approuvé'),
+        ('published', 'Publié')
+    ]
+    
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    
+    # Score global du planning
+    score_total = models.FloatField(default=0.0, help_text="Score des contraintes molles (plus bas = mieux)")
+    
+    # Métadonnées de génération
+    generated_at = models.DateTimeField(auto_now_add=True)
+    generated_by_algorithm = models.CharField(
+        max_length=50, 
+        default='least-loaded',
+        help_text="Heuristique utilisée pour générer ce planning"
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.start_date} → {self.end_date})"
+
+
+class AffectationPlanning(models.Model):
+    """
+    Chaque affectation soignant ← → poste dans un planning généré.
+    Peut être modifiée manuellement après génération (toujours sous contraintes dures).
+    """
+    planning = models.ForeignKey(Planning, on_delete=models.CASCADE, related_name='affectations')
+    soignant = models.ForeignKey(Soignant, on_delete=models.CASCADE)
+    poste = models.ForeignKey(Poste, on_delete=models.CASCADE)
+    
+    # Métadonnées
+    assigned_at = models.DateTimeField(auto_now_add=True)
+    is_manual = models.BooleanField(
+        default=False, 
+        help_text="True si affectation modifiée manuellement après génération"
+    )
+    
+    class Meta:
+        unique_together = ('planning', 'soignant', 'poste')
+        indexes = [
+            models.Index(fields=['planning', 'soignant']),
+            models.Index(fields=['planning', 'poste']),
+        ]
+
+    def __str__(self):
+        return f"{self.soignant.nom} → {self.poste}"
+
+
+class ScorePlanning(models.Model):
+    """
+    Détail du score d'un planning : pénalités pour chaque contrainte molle.
+    Permet d'analyser où le planning peut être amélioré.
+    """
+    planning = models.OneToOneField(Planning, on_delete=models.CASCADE, related_name='score_detail')
+    
+    # Contraintes molles : pénalités
+    penalty_night_consecutive = models.FloatField(
+        default=0.0,
+        help_text="Pénalité : trop de nuits consécutives"
+    )
+    penalty_preferences = models.FloatField(
+        default=0.0,
+        help_text="Pénalité : préférences de créneaux non respectées"
+    )
+    penalty_workload_equity = models.FloatField(
+        default=0.0,
+        help_text="Pénalité : charge inégale entre soignants (écart-type élevé)"
+    )
+    penalty_service_changes = models.FloatField(
+        default=0.0,
+        help_text="Pénalité : trop de changements de service"
+    )
+    penalty_weekend_equity = models.FloatField(
+        default=0.0,
+        help_text="Pénalité : inégalité dans les week-ends travaillés"
+    )
+    penalty_continuity = models.FloatField(
+        default=0.0,
+        help_text="Pénalité : manque de continuité de soins"
+    )
+    
+    # Autres métriques
+    total_shifts_assigned = models.IntegerField(default=0)
+    uncovered_shifts = models.IntegerField(default=0)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Score pour {self.planning.name}"
+
+
+class ConstrainteSouple(models.Model):
+    """
+    Configuration des poids pour les contraintes molles.
+    Permet de configurer l'importance de chaque contrainte molle
+    sans modifier le code.
+    """
+    CONSTRAINT_TYPES = [
+        ('night_consecutive', 'Nuits consécutives'),
+        ('preferences', 'Préférences de créneaux'),
+        ('workload_equity', 'Équité de charge'),
+        ('service_changes', 'Changements de service'),
+        ('weekend_equity', 'Équité week-ends'),
+        ('continuity', 'Continuité de soins'),
+    ]
+    
+    constraint_type = models.CharField(max_length=50, choices=CONSTRAINT_TYPES, unique=True)
+    weight = models.FloatField(default=1.0, help_text="Poids (0 = ignoré, >0 = actif)")
+    is_active = models.BooleanField(default=True)
+    
+    description = models.TextField(blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Contraintes souples"
+
+    def __str__(self):
+        return f"{self.get_constraint_type_display()} (w={self.weight})"

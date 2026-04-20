@@ -6,9 +6,13 @@ router = DefaultRouter()
 router.register('soignants', views.SoignantViewSet)
 router.register('postes', views.PosteViewSet)
 router.register('absences', views.AbsenceViewSet)
+router.register('affectations', views.AffectationViewSet)
+
+# Phase 3 : Plannings automatiques
+router.register('plannings', views.PlanningViewSet, basename='planning')
+router.register('affectations-planning', views.AffectationPlanningViewSet, basename='affectation-planning')
+router.register('contraintes-souples', views.ConstrainteSoupleViewSet, basename='contrainte-souple')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/affectations/', views.create_affectation),
-    path('api/affectations/<int:id>/delete/', views.delete_affectation),
+    path('', include(router.urls)),
 ]
